@@ -32,11 +32,9 @@
         <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
             Date Alpha Converter
         </h1>
-
         <p class="text-sm text-gray-600 mb-6 text-center">
             Enter a date in DD-MM-YY format to convert digits to alphabets.
         </p>
-
         <!-- Digit to Alpha Mapping Table -->
         <div class="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-200">
             <h2 class="text-lg font-semibold text-blue-800 mb-3">Mapping:</h2>
@@ -53,7 +51,6 @@
                 <div class="font-medium">9 = J</div>
             </div>
         </div>
-
         <div class="mb-6">
             <label for="dateInput" class="block text-gray-700 text-sm font-medium mb-2">
                 Enter Date (DD-MM-YY):
@@ -69,14 +66,12 @@
                 Please enter a valid date in DD-MM-YY format (e.g., 01-01-23).
             </p>
         </div>
-
         <button
             id="convertButton"
             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-200 transform hover:scale-105 shadow-md mb-4"
         >
             Convert Date
         </button>
-
         <!-- LLM-powered feature button for system explanation -->
         <button
             id="explainButton"
@@ -85,8 +80,6 @@
             <span id="explainButtonText">✨ Explain System ✨</span>
             <div id="explainLoadingSpinner" class="spinner ml-2 hidden"></div>
         </button>
-
-
         <div id="resultContainer" class="mt-8 p-6 bg-green-50 border border-green-200 rounded-lg text-center hidden">
             <h2 class="text-xl font-semibold text-green-800 mb-3">Converted Alpha-Digit Date:</h2>
             <p id="convertedDate" class="text-2xl font-extrabold text-green-900 break-words mb-4"></p>
@@ -101,7 +94,6 @@
                     Copy to Clipboard
                 </button>
                 <span id="copyMessage" class="text-sm text-green-700 hidden">Copied!</span>
-
                 <!-- New LLM-powered feature button for specific explanation -->
                 <button
                     id="explainConvertedButton"
@@ -112,7 +104,6 @@
                 </button>
             </div>
         </div>
-
         <div id="messageBox" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
             <div class="bg-white p-6 rounded-lg shadow-xl text-center max-w-sm w-full border border-gray-300">
                 <h3 id="messageBoxTitle" class="text-lg font-bold text-gray-800 mb-3"></h3>
@@ -122,9 +113,7 @@
                 </button>
             </div>
         </div>
-
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const dateInput = document.getElementById('dateInput');
@@ -134,59 +123,48 @@
             const copyButton = document.getElementById('copyButton');
             const copyMessage = document.getElementById('copyMessage');
             const inputError = document.getElementById('inputError');
-
             // LLM Feature Elements for System Explanation
             const explainButton = document.getElementById('explainButton');
             const explainButtonText = document.getElementById('explainButtonText');
             const explainLoadingSpinner = document.getElementById('explainLoadingSpinner');
-
             // LLM Feature Elements for Converted Date Explanation
             const explainConvertedButton = document.getElementById('explainConvertedButton');
             const explainConvertedButtonText = document.getElementById('explainConvertedButtonText');
             const explainConvertedLoadingSpinner = document.getElementById('explainConvertedLoadingSpinner');
-
             // Message Box Elements
             const messageBox = document.getElementById('messageBox');
             const messageBoxTitle = document.getElementById('messageBoxTitle');
             const messageBoxContent = document.getElementById('messageBoxContent');
             const messageBoxClose = document.getElementById('messageBoxClose');
-
             // Mapping object for digits to alphabets
             const alphaMap = {
                 '0': 'A', '1': 'B', '2': 'C', '3': 'D', '4': 'E',
                 '5': 'F', '6': 'G', '7': 'H', '8': 'I', '9': 'J'
             };
-
             // Reverse mapping for alpha to digits (useful for explanation)
             const reverseAlphaMap = {
                 'A': '0', 'B': '1', 'C': '2', 'D': '3', 'E': '4',
                 'F': '5', 'G': '6', 'H': '7', 'I': '8', 'J': '9'
             };
-
-
             // Function to show custom message box
             function showMessageBox(title, content) {
                 messageBoxTitle.textContent = title;
                 messageBoxContent.textContent = content;
                 messageBox.classList.remove('hidden');
             }
-
             // Event listener for message box close button
             messageBoxClose.addEventListener('click', () => {
                 messageBox.classList.add('hidden');
             });
-
             // Function to validate date format (DD-MM-YY)
             function isValidDateFormat(dateStr) {
                 // Regex to match DD-MM-YY format (e.g., 01-01-23)
                 const regex = /^\d{2}-\d{2}-\d{2}$/;
                 return regex.test(dateStr);
             }
-
             // Main conversion function
             function convertToAlphaDigit() {
                 const inputDate = dateInput.value.trim();
-
                 // Validate input format
                 if (!isValidDateFormat(inputDate)) {
                     inputError.classList.remove('hidden');
@@ -195,7 +173,6 @@
                 } else {
                     inputError.classList.add('hidden'); // Hide error if format is valid
                 }
-
                 let converted = '';
                 for (let i = 0; i < inputDate.length; i++) {
                     const char = inputDate[i];
@@ -207,22 +184,18 @@
                         converted += char;
                     }
                 }
-
                 convertedDateDisplay.textContent = converted;
                 resultContainer.classList.remove('hidden'); // Show the result container
                 copyMessage.classList.add('hidden'); // Hide "Copied!" message on new conversion
             }
-
             // Event listener for the Convert button
             convertButton.addEventListener('click', convertToAlphaDigit);
-
             // Allow pressing Enter in the input field to trigger conversion
             dateInput.addEventListener('keypress', (event) => {
                 if (event.key === 'Enter') {
                     convertButton.click();
                 }
             });
-
             // Copy to clipboard functionality
             copyButton.addEventListener('click', () => {
                 const textToCopy = convertedDateDisplay.textContent;
@@ -235,7 +208,6 @@
                         tempInput.select();
                         document.execCommand('copy');
                         document.body.removeChild(tempInput);
-
                         copyMessage.classList.remove('hidden'); // Show "Copied!" message
                         setTimeout(() => {
                             copyMessage.classList.add('hidden');
@@ -246,21 +218,17 @@
                     }
                 }
             });
-
             // LLM Feature: Explain System
             explainButton.addEventListener('click', async () => {
                 // Show loading spinner
                 explainButtonText.classList.add('hidden');
                 explainLoadingSpinner.classList.remove('hidden');
                 explainButton.disabled = true; // Disable button during loading
-
                 const prompt = "Explain in 2-3 concise paragraphs the purpose and benefits of converting numerical dates (DD-MM-YY) into an alpha-digit format (0=A, 1=B, ..., 9=J) specifically for use by shop floor operators. Focus on how this system helps reduce confusion and improve accuracy.";
-
                 let chatHistory = [];
                 chatHistory.push({ role: "user", parts: [{ text: prompt }] });
                 const payload = { contents: chatHistory };
                 const apiKey = ""; // Canvas will automatically provide the API key at runtime
-
                 try {
                     const apiUrl = https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey};
                     const response = await fetch(apiUrl, {
@@ -268,9 +236,7 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-
                     const result = await response.json();
-
                     if (result.candidates && result.candidates.length > 0 &&
                         result.candidates[0].content && result.candidates[0].content.parts &&
                         result.candidates[0].content.parts.length > 0) {
@@ -289,21 +255,17 @@
                     explainButton.disabled = false;
                 }
             });
-
             // LLM Feature: Explain Converted Date
             explainConvertedButton.addEventListener('click', async () => {
                 const convertedDate = convertedDateDisplay.textContent;
-
                 if (!convertedDate) {
                     showMessageBox('No Date Converted', 'Please convert a date first to get an explanation.');
                     return;
                 }
-
                 // Show loading spinner
                 explainConvertedButtonText.classList.add('hidden');
                 explainConvertedLoadingSpinner.classList.remove('hidden');
                 explainConvertedButton.disabled = true; // Disable button during loading
-
                 // Construct the prompt for the LLM
                 // First, reverse convert the alpha-digit date back to numerical for context
                 let numericalDate = '';
@@ -315,16 +277,12 @@
                         numericalDate += char; // Keep hyphens as is
                     }
                 }
-
                 const prompt = `The original numerical date was "${numericalDate}" which was converted to "${convertedDate}" using a system where 0=A, 1=B, 2=C, 3=D, 4=E, 5=F, 6=G, 7=H, 8=I, 9=J.
-
                 Please explain how the alpha-digit date "${convertedDate}" was derived from the numerical date "${numericalDate}". Break down the conversion for each part (day, month, year) and clearly show which numerical digit corresponds to which alphabet. Keep the explanation clear and concise, suitable for a shop floor operator.`;
-
                 let chatHistory = [];
                 chatHistory.push({ role: "user", parts: [{ text: prompt }] });
                 const payload = { contents: chatHistory };
                 const apiKey = ""; // Canvas will automatically provide the API key at runtime
-
                 try {
                     const apiUrl = https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey};
                     const response = await fetch(apiUrl, {
@@ -332,9 +290,7 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-
                     const result = await response.json();
-
                     if (result.candidates && result.candidates.length > 0 &&
                         result.candidates[0].content && result.candidates[0].content.parts &&
                         result.candidates[0].content.parts.length > 0) {
